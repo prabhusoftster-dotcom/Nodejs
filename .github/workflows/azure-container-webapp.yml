@@ -1,10 +1,30 @@
-name: project2
-on: workflow_dispatch
+name: NodeJs
+
+on:
+  workflow_dispatch:
+
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Code
+      - name: Get code
         uses: actions/checkout@v6
-        env:
-          TOKEN: ${{ secrets.TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy
+        run: echo "Deploying to production server..."
