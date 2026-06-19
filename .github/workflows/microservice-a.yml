@@ -1,10 +1,10 @@
 name: Microservice A Pipeline
 
-on: [push]
+on:
+  push:
 
 jobs:
   call-master-build:
-    # We simply point to the central file and pass the input!
-    uses: my-org/central-repo/.github/workflows/reusable-build.yml@main
+    uses: ./.github/workflows/reusable-build.yml
     with:
       node_version: '20'
