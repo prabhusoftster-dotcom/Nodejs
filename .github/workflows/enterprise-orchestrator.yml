@@ -2,8 +2,16 @@ name:  NodeJs
 
 on:
   push:
+    branches: master
 
-jobs:
+
+permissions: 
+   security-events: write
+   issues: write
+   actions: read
+   contents: read
+
+jobs: 
   build:
     runs-on: ${{ matrix.os }}
 
@@ -15,15 +23,6 @@ jobs:
           - os: windows-latest
             node-version: 22
 
-permissions: 
-   security-events: write
-   issues: write
-   actions: read
-   contents: read
-
-jobs: 
-  Build-Test: 
-    runs-on: self-hosted
     steps: 
       - name:  Checkout Code
         uses:  actions/checkout@v7
