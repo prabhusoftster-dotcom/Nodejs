@@ -2,28 +2,18 @@ name:  NodeJs
 
 on:
   push:
-    branches: master
+     branches: master
 
-
-permissions: 
+permissions:
    security-events: write
    issues: write
    actions: read
    contents: read
 
-jobs: 
-  build:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        node-version: [18, 20, 22]
-        exclude:
-          - os: windows-latest
-            node-version: 22
-
-    steps: 
+jobs:
+  Build-Test:
+    runs-on:  ubuntu-latest
+    steps:
       - name:  Checkout Code
         uses:  actions/checkout@v7
 
@@ -32,19 +22,23 @@ jobs:
         with:
           node-version: '24'
 
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+
       - name: Build
         run: npm install
 
       - name: test
         run: npm test
 
-
-      - name: Cache Dependencies
-        uses: actions/cache@v5
-        with:
-          path: ~/.npm
-          key:  ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          
       - name: Artifact upload
         uses: actions/upload-artifact@v7
         with:
@@ -54,5 +48,3 @@ jobs:
 
       - name: Deploy
         run: echo "code is deployed"
-
-
