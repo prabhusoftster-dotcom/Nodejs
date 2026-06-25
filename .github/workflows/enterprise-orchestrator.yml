@@ -1,5 +1,9 @@
 name:  NodeJs
 
+jobs:
+  Build-Test:
+    runs-on: self-hosted
+
 on:
   push:
      branches: master
